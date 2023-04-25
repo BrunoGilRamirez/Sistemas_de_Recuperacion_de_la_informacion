@@ -1,0 +1,166 @@
+Inicio Clase Probabilistico:
+    d = Nulo
+    documents = Nulo
+    term_dict = Nulo
+    
+    función  __init__():
+        self.d = [] 
+        self.documents = {} 
+        self.stop_words = conjunto_vacio() 
+        self.term_dict = {} 
+        self.unique_words = conjunto_vacio()
+        self.relevant_docs = []
+    Fin de __init__
+    
+    función get_textfrom_file(self, path='2591-0.txt', encoding="utf-8-sig"):
+        filtered_words = [] 
+        si ".txt" en path: 
+            con abrir(path, 'r') como texto: 
+                texto = leer(texto) 
+                filtered_words = dividir_texto(texto en minúsculas)   
+        si ".pdf" en path: 
+            texto = extraer_texto(path) 
+            filtered_words = dividir_texto(texto en minúsculas)   
+        documentos[path] = filtered_words 
+    Fin de get_textfrom_file
+
+    función addDoc(self, docs: diccionario): 
+        documentos = documentos union docs 
+    Fin de addDoc
+
+    función tokenize(self):
+        para nombre, texto en documentos:
+            documentos[nombre] = convertir_mayúsculas(texto) 
+
+        unique_words = conjunto_de_tokens(juntar(valores(documentos)), lenguaje='español') 
+        unique_words.remove(".")   
+        unique_words = unique_words - stop_words 
+        unique_words = palabras_únicas 
+        para palabra en palabras_únicas: 
+            para nombre, texto en documentos: 
+                si nombre no está en term_dict: 
+                    term_dict[nombre] = {} 
+                term_dict[nombre][palabra] = boolean_evaluar(palabra, texto) 
+        ordenar_dict() 
+        retornar term_dict 
+    Fin de tokenize
+
+    función imprimir(self):
+        para nombre, pesos en term_dict:
+            imprimir(f"Datos procesados: \n {nombre}: {lista_de_pesos}\n")
+    Fin de imprimir
+
+    función ordenar_dict(self):
+        para nombre, pesos en term_dict:
+            term_dict[nombre] = diccionario_ordenado(pesos, key=lambda item: item[1], reverse=True)
+    Fin de ordenar_dict
+
+    función boolean_eval(self, término, texto):
+        tokens = tokens(texto, lenguaje='español')
+        tokens.remove(".")
+        si término está en tokens:
+            retornar 1
+        otra cosa:
+            retornar 0
+    Fin de boolean_eval
+
+
+    función importance_of_a_term(self, term):
+        relevant_docs = {} 
+        peso = 0 
+        para nombre, pesos en term_dict:
+            si pesos.get(term) == 1:
+                peso += pesos.get(term)
+                relevant_docs[nombre] = peso  
+        retornar relevant_docs
+    Fin de importance_of_a_term
+
+    función Relevancy_calculation(termn, type)
+        si type es igual a "r" entonces
+            r = 0
+            R_r = 0
+            para cada doc en self.relevant_docs hacer
+                si self.term_dict[doc].get(termn) es igual a 1 entonces
+                    r += 1 
+                sino
+                    R_r += 1
+                fin si
+            fin para
+            retornar r, (r+R_r)
+        fin si
+        si type es igual a "nr" entonces
+            nr = 0
+            N_R_ntr = 0
+            no_relevants = self.documents.keys() - self.relevant_docs
+            para cada doc en no_relevants hacer
+                si self.term_dict[doc].get(termn) es igual a 1 entonces
+                    nr += 1 
+                sino
+                    N_R_ntr += 1
+                fin si
+            fin para
+            retornar nr, (nr+N_R_ntr)
+        fin si
+    Fin de Relevancy_calculation
+    
+    función P_ti_nr(self, termn, relevant_docs):
+        si len(self.relevant_docs) es  mayor que 0:
+            nr, Nra = self.Relevancy_calculation(termn, "nr")
+            q = nr / Nra
+            l_q = 1 - q
+            return q, l_q
+        si no:
+            suma = self.suma(relevant_docs, termn)
+            prob_condicional = (suma / len(self.documents))
+            return prob_condicional
+        fin si
+    Fin de P_ti_nr
+
+    Funcion P_ti_r(self, termn, relevant_docs, incertidumbre=0.5):
+        si len(self.relevant_docs) es  mayor que 0:
+            r, Ra = self.Relevancy_calculation(termn, "r")
+            p = r / Ra
+            l_p = 1 - p
+            return p, l_p
+        si no:
+            prob_condicional = incertidumbre
+            return prob_condicional
+        fin si
+    Fin de P_ti_r
+    Función relevant_docs_from_a_survey(self, relevant_docs)
+        Asignar relevant_docs a self.relevant_docs
+        Devolver self.relevant_docs
+    Fin de relevant_docs_from_a_survey
+    Función union_resultados(self, conditional)
+        nuevo_diccionario = diccionario vacío
+        Para cada diccionario en los valores de conditional hacer:
+            Para cada clave y valor en el diccionario hacer:
+                Si la clave está en nuevo_diccionario entonces:
+                    Sumar el valor correspondiente al valor actual en nuevo_diccionario
+                De lo contrario:
+                    Agregar la clave con su valor en nuevo_diccionario
+        Ordenar nuevo_diccionario por sus valores en orden ascendente
+        Devolver nuevo_diccionario_ordenado
+    Fin de union_resultados
+    funcion suma(name, word):
+        suma = 0
+        para cada nam, pesos en la lista de items de self.term_dict:
+            si nam esta en name y pesos[word] es igual a 1:
+                suma = suma + pesos[word]
+        retornar suma
+    Fin de suma
+
+
+
+Fin del pseudocódigo.
+
+
+
+
+
+
+
+
+
+
+Fin de Clase Probabilistico.

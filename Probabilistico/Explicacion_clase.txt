@@ -1,0 +1,25 @@
+Este código parece implementar un modelo de recuperación de información probabilística para datos de texto utilizando la biblioteca NLTK de Python. Define una clase llamada "Probabilistico" que tiene varios métodos para procesar datos de texto y calcular probabilidades para documentos relevantes y no relevantes.
+
+Estos son algunos de los métodos clave y sus funcionalidades:
+
+__init__: inicializa varios atributos de la clase, como listas vacías y conjuntos para almacenar texto de documentos y palabras únicas.
+
+get_textfrom_file: lee datos de texto de un archivo y los divide en palabras. Luego, las palabras se filtran para eliminar las palabras vacías y se convierten a Mayusculas.
+
+addDoc: agrega texto de documento al atributo de documentos de la clase.
+
+tokenizar: tokeniza los datos de texto y crea un diccionario de frecuencias de términos para cada documento.
+
+boolean_eval: Evalúa si un término dado está presente en el texto de un documento y devuelve 1 si está presente y 0 si no.
+
+Importance_ofATerm: Calcula la relevancia de un término dado en cada documento y devuelve un diccionario de documentos relevantes y sus puntajes de relevancia.
+Relevancy_calculation: Calcula el número de documentos relevantes y no relevantes que contienen un término dado.
+
+
+P_ti_nr: Calcula la probabilidad de que un documento no relevante contenga un término dado.
+
+P_ti_r: Calcula la probabilidad de que un documento relevante contenga un término dado.
+
+Query_processing: procesa una consulta tokenizándola, calculando la relevancia de cada término y calculando la probabilidad de que cada término aparezca en un documento relevante o no relevante.
+
+La clase también tiene varios atributos para almacenar varias piezas de información, como las palabras únicas en el corpus (unique_words), las palabras vacías en el corpus (stop_words) y el diccionario de frecuencias de términos para cada documento (term_dict).
