@@ -39,7 +39,7 @@ class KMeans_DocsRecovery:
         # Bucle principal del algoritmo
         for _ in range(max_iter):
             # Asignación de cada vector al centroide más cercano
-            self.distancias = np.linalg.norm(self.X[:, np.newaxis, :] - self.centroides, axis=-1)
+            self.distancias = np.linalg.norm(self.X[:, np.newaxis, :] - self.centroides, axis=-1) #:, np.newaxis, :] es para que se pueda restar el array de centroides a cada vector de X, np.linalg.norm es la norma euclidea, esto hace que se calcule la distancia de cada vector a cada centroide, distancias es un array de distancias, cada distancia corresponde a un cluster.
             self.etiquetas = np.argmin(self.distancias, axis=1)
             
             # Actualización de los centroides
@@ -127,16 +127,16 @@ class KMeans_DocsRecovery:
         
         
         if Algoritmo == 'k_medias_mejorado': #Este if hace que se ejecute el algoritmo elegido.
-            etiquetas, centroides = self.k_medias_mejorado( max_iter, tol, seed)
+            self.etiquetas, self.centroides = self.k_medias_mejorado( max_iter, tol, seed)
         elif Algoritmo == 'k_medias':
-            etiquetas, centroides = self.k_medias( max_iter)
+            self.etiquetas, self.centroides = self.k_medias( max_iter)
         elif Algoritmo == 'k_mode':
-            etiquetas, centroides = self.k_mode( max_iter, tol, seed)
+            self.etiquetas, self.centroides = self.k_mode( max_iter, tol, seed)
 
         # Impresión de los clústeres
         dict_cluster={}
         for i in range(self.k): #Este bucle hace que se cree un diccionario con los clusters y sus vectores.
-            indices = etiquetas == i #Este bucle hace que se cree un diccionario con los clusters y sus vectores.
+            indices = self.etiquetas == i #Este bucle hace que se cree un diccionario con los clusters y sus vectores.
             vectores_cluster = self.X[indices] #Esto hace que se cree un diccionario con los clusters y sus vectores.
             dict_cluster[i] = vectores_cluster.tolist() #Esto hace que se cree un diccionario con los clusters y sus vectores.
 
@@ -151,4 +151,8 @@ class KMeans_DocsRecovery:
         self.dict_documentos['query'] = query
         self.vectorize_documents(self.dict_documentos)
         self.k_mean_fit(Algoritmo, max_iter, tol, seed)
+    def asignar_cluster(self, vector_nuevo):
+        distancias = np.linalg.norm(vector_nuevo - self.centroides, axis=1)
+        cluster = np.argmin(distancias)
+        return cluster
     
